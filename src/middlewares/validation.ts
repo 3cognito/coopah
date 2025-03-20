@@ -18,6 +18,6 @@ export function validationmiddleware<T extends object>(
       await next();
     }
 
-    JsonError(ctx, 400, errMsg, new ValidationError(errMsg));
+    JsonError(ctx, new ValidationError(errMsg));
   };
 }
