@@ -1,5 +1,5 @@
 import { Context } from "koa";
-import { AuthService } from "../services/auth.service";
+import { authService, AuthService } from "../services/auth.service";
 import { LoginDto, RegisterDto } from "../dto/auth.dto";
 import { handleError, JsonSuccess } from "../packages/response/response";
 
@@ -29,3 +29,5 @@ export class AuthController {
     }
   }
 }
+
+export const authHandler = new AuthController(authService);
