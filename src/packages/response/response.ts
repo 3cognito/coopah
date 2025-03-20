@@ -1,33 +1,37 @@
 import { Context } from "koa";
-import { CustomException } from "../../errors";
+import { CustomException, InternalServerError } from "../../errors";
 
 export function JsonSuccess(
   ctx: Context,
-  status: number,
+  statusCode: number,
   data: object = {},
   message: string
 ) {
-  ctx.status = status;
+  ctx.status = statusCode;
   ctx.body = { ok: true, message, data };
 }
 
-export function JsonError(
-  ctx: Context,
-  status: number = 400,
-  message: string = "An error occurred",
-  error: CustomException
-) {
-  ctx.status = status;
+export function handleError(ctx: Context, error: unknown) {
+  if (error instanceof CustomException) {
+    JsonError(ctx, error);
+  } else {
+    console.error("Unknown error occurred:", error);
+    JsonError(ctx, new InternalServerError());
+  }
+}
+
+export function JsonError(ctx: Context, error: CustomException) {
+  ctx.status = error.statusCode;
   console.error({
     request: ctx.request,
-    status,
-    message,
+    statusCode: error.statusCode,
+    message: error.message,
     error: error.message,
     stack: error.stack,
   });
   ctx.body = {
     ok: false,
-    message,
+    message: error.message || "An error occured",
     error: error.message,
   };
 }
