@@ -9,7 +9,7 @@ export interface IConfigs {
   DB_PASSWORD: string;
   PORT: number;
   APP_SECRET: string;
-  JWT_EXPIRES_IN_HRS: string;
+  JWT_EXPIRES_IN_HRS: number;
 }
 
 export const Configs: IConfigs = {
@@ -20,7 +20,7 @@ export const Configs: IConfigs = {
   DB_PORT: +process.env.DB_PORT!,
   PORT: +process.env.PORT!,
   APP_SECRET: process.env.APP_SECRET!,
-  JWT_EXPIRES_IN_HRS: process.env.JWT_EXPIRES_IN_HRS!,
+  JWT_EXPIRES_IN_HRS: +process.env.JWT_EXPIRES_IN_HRS!,
 };
 
 export function validateConfigs() {
@@ -34,6 +34,10 @@ export function validateConfigs() {
         throw new Error(
           `Configuration error: ${key} cannot be an empty string.`
         );
+      }
+
+      if (typeof value === "number" && isNaN(+value)) {
+        throw new Error(`Configuration error: ${key} is an invalid number.`);
       }
     }
   } catch (e) {
