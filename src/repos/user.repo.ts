@@ -14,6 +14,10 @@ export class UserRepo extends Repository<User> {
     if (ok) return await this.save(user);
     throw new ValidationError(errors.join(" "));
   }
+
+  async findByEmail(email: string): Promise<User | null> {
+    return await this.findOne({ where: { email } });
+  }
 }
 
-export const walletRepo = new UserRepo();
+export const userRepo = new UserRepo();

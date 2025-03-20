@@ -1,7 +1,7 @@
 import { LoginDto, RegisterDto } from "../dto/auth.dto";
-import { User } from "../models/user.model";
+import { NotFoundError } from "../errors";
 import { Configs } from "../packages/configs";
-import { UserRepo } from "../repos/user.repo";
+import { userRepo, UserRepo } from "../repos/user.repo";
 import jwt from "jsonwebtoken";
 
 export class AuthService {
@@ -17,14 +17,18 @@ export class AuthService {
   }
 
   async login(data: LoginDto) {
-    // const user =
+    const user = await this.userRepo.findByEmail(data.email);
+    if (!user) throw new NotFoundError("Account not found");
+    const token = await this.signJwt(user.id);
+    return { user, token };
   }
 
   async signJwt(userID: string): Promise<string> {
     const token = jwt.sign({ id: userID }, Configs.APP_SECRET, {
       expiresIn: "1h",
     });
-    //store in redis
     return token;
   }
 }
+
+export const authService = new AuthService(userRepo);
