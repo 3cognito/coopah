@@ -1,6 +1,9 @@
 {
   "dependencies": {
-    "koa": "^2.16.0"
+    "dotenv": "^16.4.7",
+    "koa": "^2.16.0",
+    "pg": "^8.14.1",
+    "typeorm": "^0.3.21"
   },
   "name": "coopah",
   "version": "1.0.0",
@@ -20,6 +23,7 @@
   "license": "ISC",
   "description": "Simple run tracking app",
   "devDependencies": {
+    "@types/dotenv": "^6.1.1",
     "@types/koa": "^2.15.0",
     "@types/koa-router": "^7.4.8",
     "ts-node": "^10.9.2",

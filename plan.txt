@@ -2,3 +2,5 @@ Task List
 
 
 1. Set up application - DONE
+2. Set up Configs - DONE
+3. Set up Db connection - DONE
