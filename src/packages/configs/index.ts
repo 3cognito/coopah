@@ -8,6 +8,8 @@ export interface IConfigs {
   DB_USER: string;
   DB_PASSWORD: string;
   PORT: number;
+  APP_SECRET: string;
+  JWT_EXPIRES_IN_HRS: string;
 }
 
 export const Configs: IConfigs = {
@@ -17,6 +19,8 @@ export const Configs: IConfigs = {
   DB_PASSWORD: process.env.DB_PASSWORD!,
   DB_PORT: +process.env.DB_PORT!,
   PORT: +process.env.PORT!,
+  APP_SECRET: process.env.APP_SECRET!,
+  JWT_EXPIRES_IN_HRS: process.env.JWT_EXPIRES_IN_HRS!,
 };
 
 export function validateConfigs() {
