@@ -1,0 +1,28 @@
+{
+  "dependencies": {
+    "koa": "^2.16.0"
+  },
+  "name": "coopah",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm run clean && tsc",
+    "clean": "rm -rf dist",
+    "start": "node dist/index.js",
+    "dev": "npm run build && node dist/index.js"
+  },
+  "keywords": [
+    "running",
+    "health"
+  ],
+  "author": "Tommy, Ubongabasi",
+  "license": "ISC",
+  "description": "Simple run tracking app",
+  "devDependencies": {
+    "@types/koa": "^2.15.0",
+    "@types/koa-router": "^7.4.8",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2"
+  }
+}
