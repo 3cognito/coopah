@@ -13,7 +13,7 @@ export class AuthController {
     const registerDto = ctx.state.validatedBody as RegisterDto;
     try {
       const data = await this.authService.register(registerDto);
-      JsonSuccess(ctx, 201, data, "account created successfully");
+      JsonSuccess(ctx, 201, data, "Account created successfully");
     } catch (error) {
       handleError(ctx, error);
     }

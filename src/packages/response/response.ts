@@ -12,23 +12,24 @@ export function JsonSuccess(
 }
 
 export function handleError(ctx: Context, error: unknown) {
-  if (error instanceof CustomException) {
-    JsonError(ctx, error);
-  } else {
-    console.error("Unknown error occurred:", error);
-    JsonError(ctx, new InternalServerError());
-  }
+  const formattedError = {
+    message: error instanceof Error ? error.message : "An error occured",
+    stack: error instanceof Error && error.stack ? error.stack : "",
+    statusCode: error instanceof CustomException ? error.statusCode : 500,
+  };
+  console.error(error);
+  JsonError(ctx, formattedError);
 }
 
-export function JsonError(ctx: Context, error: CustomException) {
+export function JsonError(
+  ctx: Context,
+  error: {
+    message: string;
+    stack: string;
+    statusCode: number;
+  }
+) {
   ctx.status = error.statusCode;
-  console.error({
-    request: ctx.request,
-    statusCode: error.statusCode,
-    message: error.message,
-    error: error.message,
-    stack: error.stack,
-  });
   ctx.body = {
     ok: false,
     message: error.message || "An error occured",

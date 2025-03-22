@@ -9,8 +9,7 @@ const app = new Koa();
 app.use(bodyParser());
 
 ///configure security middlewares
-app.use(authRouter.routes());
-app.use(authRouter.allowedMethods());
+app.use(authRouter.routes()).use(authRouter.allowedMethods());
 
 const port = Configs.PORT || 3412;
 app.listen(port, async () => {

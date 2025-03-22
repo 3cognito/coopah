@@ -6,6 +6,7 @@ import {
   Entity,
   Index,
   PrimaryGeneratedColumn,
+  Unique,
   UpdateDateColumn,
 } from "typeorm";
 
@@ -22,6 +23,7 @@ export class User {
   lastname!: string;
 
   @Column()
+  @Unique(["email"])
   @Index()
   @IsEmail({}, { message: "please enter a valid email" })
   email!: string;
