@@ -30,7 +30,7 @@ export class User {
   @IsEmail({}, { message: "please enter a valid email" })
   email!: string;
 
-  @Column()
+  @Column({ select: false })
   password!: string;
 
   @CreateDateColumn()
