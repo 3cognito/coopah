@@ -4,7 +4,7 @@ import { validateEntity } from "../utils/validator";
 import { handleError } from "../packages/response/response";
 import { ValidationError } from "../errors";
 
-export function validationmiddleware<T extends object>(
+export function validationMiddleware<T extends object>(
   type: new () => T
 ): (ctx: Context, next: Next) => Promise<void> {
   return async (ctx: Context, next: Next): Promise<void> => {
