@@ -24,7 +24,7 @@ export async function CheckAuthToken(ctx: Context, next: Next): Promise<void> {
       if (!user) {
         return handleError(ctx, new UnauthorizedError("Account not found"));
       }
-      ctx.state.user = user;
+      ctx.state.user = user; //TODO: declaraiton merging to make user accessible from handlers.
       await next();
     } else {
       return handleError(ctx, new UnauthorizedError("Invalid token payload"));
