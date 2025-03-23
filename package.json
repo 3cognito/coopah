@@ -1,8 +1,15 @@
 {
   "dependencies": {
+    "@koa/router": "^13.1.0",
+    "bcryptjs": "^3.0.2",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
     "dotenv": "^16.4.7",
+    "jsonwebtoken": "^9.0.2",
     "koa": "^2.16.0",
+    "koa-bodyparser": "^4.4.1",
     "pg": "^8.14.1",
+    "reflect-metadata": "^0.2.2",
     "typeorm": "^0.3.21"
   },
   "name": "coopah",
@@ -13,7 +20,7 @@
     "build": "npm run clean && tsc",
     "clean": "rm -rf dist",
     "start": "node dist/index.js",
-    "dev": "npm run build && node dist/index.js"
+    "dev": "npm run build && nodemon dist/index.js"
   },
   "keywords": [
     "running",
@@ -23,9 +30,14 @@
   "license": "ISC",
   "description": "Simple run tracking app",
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/dotenv": "^6.1.1",
+    "@types/jsonwebtoken": "^9.0.9",
     "@types/koa": "^2.15.0",
+    "@types/koa__router": "^12.0.4",
+    "@types/koa-bodyparser": "^4.3.12",
     "@types/koa-router": "^7.4.8",
+    "nodemon": "^3.1.9",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.2"
   }
