@@ -1,5 +1,6 @@
 import { IsEmail, MinLength } from "class-validator";
 import {
+  BeforeInsert,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -9,6 +10,7 @@ import {
   Unique,
   UpdateDateColumn,
 } from "typeorm";
+import bcrypt from "bcryptjs";
 
 @Entity()
 export class User {
@@ -39,4 +41,9 @@ export class User {
 
   @DeleteDateColumn()
   deletedAt!: Date;
+
+  @BeforeInsert()
+  hashPassword() {
+    this.password = bcrypt.hashSync(this.password, 14);
+  }
 }

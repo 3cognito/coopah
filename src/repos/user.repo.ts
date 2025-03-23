@@ -11,7 +11,7 @@ export class UserRepo extends Repository<User> {
 
   async createUser(user: Partial<User>) {
     const { ok, errors } = await validateEntity(user);
-    if (ok) return await this.save(user);
+    if (ok) return await this.save(this.create(user));
     throw new ValidationError(errors.join(" "));
   }
 
