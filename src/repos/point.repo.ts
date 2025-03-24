@@ -4,15 +4,12 @@ import { validateEntity } from "../utils/validator";
 import { ValidationError } from "../errors";
 import { Point } from "../models/point.model";
 
-type PartialWithRequired<T, K extends keyof T> = Partial<T> &
-  Required<Pick<T, K>>;
-
 export class PointRepo extends Repository<Point> {
   constructor() {
     super(Point, AppDataSource.manager);
   }
 
-  async savePoint(pt: Partial<Point>) {
+  async addPoint(pt: Partial<Point>) {
     const { ok, errors } = await validateEntity(pt);
     if (ok) {
       const newRun = await this.save(this.create(pt));
@@ -22,7 +19,14 @@ export class PointRepo extends Repository<Point> {
   }
 
   async getRunPoints(run_id: string) {
-    const pts = await this.find({ where: { run_id } });
+    const pts = await this.find({
+      where: { run_id },
+      order: {
+        timestamp: {
+          direction: "DESC",
+        },
+      },
+    });
     return pts;
   }
 }

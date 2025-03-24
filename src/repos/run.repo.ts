@@ -2,7 +2,7 @@ import { Repository } from "typeorm";
 import { AppDataSource } from "../packages/db";
 import { validateEntity } from "../utils/validator";
 import { ValidationError } from "../errors";
-import { Run } from "../models/run.model";
+import { Run, RunStatus } from "../models/run.model";
 
 type PartialWithRequired<T, K extends keyof T> = Partial<T> &
   Required<Pick<T, K>>;
@@ -27,6 +27,12 @@ export class RunRepo extends Repository<Run> {
 
   async getRun(id: string) {
     return await this.findOne({ where: { id } });
+  }
+
+  async getUserCompletedRuns(userID: string) {
+    return await this.find({
+      where: { userID, status: RunStatus.COMPLETED },
+    });
   }
 }
 
