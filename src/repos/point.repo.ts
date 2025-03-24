@@ -1,4 +1,4 @@
-import { Repository } from "typeorm";
+import { QueryRunner, Repository } from "typeorm";
 import { AppDataSource } from "../packages/db";
 import { validateEntity } from "../utils/validator";
 import { ValidationError } from "../errors";
@@ -9,11 +9,14 @@ export class PointRepo extends Repository<Point> {
     super(Point, AppDataSource.manager);
   }
 
-  async addPoint(pt: Partial<Point>) {
+  async addPoint(pt: Partial<Point>, trx?: QueryRunner) {
     const { ok, errors } = await validateEntity(pt);
     if (ok) {
-      const newRun = await this.save(this.create(pt));
-      return newRun;
+      let newPt: Point;
+      trx
+        ? (newPt = await trx.manager.save(this.create(pt)))
+        : (newPt = await this.save(this.create(pt)));
+      return newPt;
     }
     throw new ValidationError(errors.join(" "));
   }

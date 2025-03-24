@@ -21,7 +21,7 @@ export class Point {
 
   @Column({ type: "uuid" })
   @Index()
-  @ManyToOne(() => Run)
+  @ManyToOne(() => Run, { onDelete: "CASCADE" })
   @JoinColumn({ name: "run_id" })
   run_id!: string;
 

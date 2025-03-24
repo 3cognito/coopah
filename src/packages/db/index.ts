@@ -27,6 +27,7 @@ export async function connectDB() {
 
 export async function startTransaction() {
   const newRunner = AppDataSource.createQueryRunner();
+  await newRunner.connect();
   await newRunner.startTransaction();
   return newRunner;
 }

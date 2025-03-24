@@ -1,4 +1,4 @@
-import { Repository } from "typeorm";
+import { QueryRunner, Repository } from "typeorm";
 import { AppDataSource } from "../packages/db";
 import { validateEntity } from "../utils/validator";
 import { ValidationError } from "../errors";
@@ -12,10 +12,13 @@ export class RunRepo extends Repository<Run> {
     super(Run, AppDataSource.manager);
   }
 
-  async createRun(run: Partial<Run>) {
+  async createRun(run: Partial<Run>, trx?: QueryRunner) {
     const { ok, errors } = await validateEntity(run);
     if (ok) {
-      const newRun = await this.save(this.create(run));
+      let newRun: Run;
+      trx
+        ? (newRun = await trx.manager.save(this.create(run)))
+        : (newRun = await this.save(this.create(run)));
       return newRun;
     }
     throw new ValidationError(errors.join(" "));
