@@ -28,19 +28,19 @@ export class Run {
   @Column({ nullable: true })
   finishedAt!: Date;
 
-  @Column({ nullable: true })
+  @Column({ default: 0 })
   totalDistance!: number; //in centimeters
 
-  @Column({ nullable: true })
+  @Column({ default: 0 })
   timeElapsed!: number; // in seconds
 
-  @Column({ type: "float", nullable: true })
+  @Column({ type: "float", default: 0 })
   caloriesBurned!: number;
 
-  @Column({ nullable: true })
+  @Column({ default: 0 })
   speed!: number; //km/h
 
-  @Column({ nullable: true })
+  @Column({ default: 0 })
   pace!: number; //min per km
 
   @CreateDateColumn()
