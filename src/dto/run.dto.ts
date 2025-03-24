@@ -6,7 +6,7 @@ import {
   ValidateNested,
 } from "class-validator";
 
-export class RunDto {
+export class RunRequestDto {
   @IsArray()
   @ArrayMinSize(3)
   @ArrayMaxSize(3)

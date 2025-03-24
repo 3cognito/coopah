@@ -27,8 +27,8 @@ export class RunService {
     }
   }
 
-  async addPoint(run_id: string, coordinates: number[]) {
-    const run = await this.runRepo.getRun(run_id);
+  async addPoint(userID: string, run_id: string, coordinates: number[]) {
+    const run = await this.runRepo.getUserRun(run_id, userID);
     if (!run) throw new BadRequestError("Run not found");
     const [latitude, longitude, altitude] = coordinates;
     this.validLatLongAlt(latitude, longitude, altitude);
@@ -36,10 +36,10 @@ export class RunService {
     //process and return key run stats incase mobile is not doing so (use redis to hold active runs and associated data???)
   }
 
-  async completeRun(run_id: string, finishPoint: number[]) {
+  async completeRun(userId: string, run_id: string, finishPoint: number[]) {
     await this.ptRepo.queryRunner?.startTransaction();
     try {
-      const run = await this.runRepo.getRun(run_id);
+      const run = await this.runRepo.getUserRun(run_id, userId);
       if (!run) throw new BadRequestError("Run not found");
       const [latitude, longitude, altitude] = finishPoint;
       this.validLatLongAlt(latitude, longitude, altitude);
@@ -58,18 +58,17 @@ export class RunService {
     }
   }
 
-  async getRunPoints(runId: string) {
-    return await this.ptRepo.getRunPoints(runId);
-  }
-
   async getUserCompletedRuns(userId: string) {
     return await this.runRepo.getUserCompletedRuns(userId);
   }
 
-  //   // Computes total distance and elapsed time for a run
-  //   async getRunSummary(
-  //     runId: string
-  //   ): Promise<{ totalDistance: number; timeElapsed: number }> {}
+  async getRun(userId: string, runId: string) {
+    const run = await this.runRepo.getUserRun(runId, userId);
+    if (!run) throw new BadRequestError("Run not found");
+    const runPts = await this.ptRepo.getRunPoints(run.id);
+    //aggregate and format
+    return { run, mapPoints: runPts };
+  }
 
   private validLatLongAlt(lat: number, long: number, alt: number) {
     if (lat < -90 || lat > 90) {
