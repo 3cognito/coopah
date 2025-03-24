@@ -37,6 +37,12 @@ export class Run {
   @Column({ type: "float", nullable: true })
   caloriesBurned!: number;
 
+  @Column({ nullable: true })
+  speed!: number; //km/h
+
+  @Column({ nullable: true })
+  pace!: number; //min per km
+
   @CreateDateColumn()
   createdAt!: Date; //using this as start time, under the assumption user starts running when they create a run
 
