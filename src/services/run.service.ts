@@ -43,7 +43,7 @@ export class RunService {
     if (!run) throw new BadRequestError("Run not found");
     const [latitude, longitude, altitude] = coordinates;
     this.validLatLongAlt(latitude, longitude, altitude);
-    await this.ptRepo.addPoint({ latitude, longitude, altitude });
+    await this.ptRepo.addPoint({ latitude, longitude, altitude, run_id });
     //process and return key run stats incase mobile is not doing so (use redis to hold active runs and associated data???)
   }
 
@@ -54,7 +54,7 @@ export class RunService {
       if (!run) throw new BadRequestError("Run not found");
       const [latitude, longitude, altitude] = finishPoint;
       this.validLatLongAlt(latitude, longitude, altitude);
-      await this.ptRepo.addPoint({ latitude, longitude, altitude });
+      await this.ptRepo.addPoint({ latitude, longitude, altitude, run_id });
 
       run.finishedAt = new Date();
       run.status = RunStatus.COMPLETED;

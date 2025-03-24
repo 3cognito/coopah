@@ -1,7 +1,7 @@
 import { Context } from "koa";
 import { handleError, JsonSuccess } from "../packages/response/response";
 import { RunService, runService } from "../services/run.service";
-import { RunRequestDto } from "../dto/run.dto";
+import { AddPointDto, RunRequestDto } from "../dto/run.dto";
 import { ValidationError } from "../errors";
 
 export class RunHandler {
@@ -24,15 +24,11 @@ export class RunHandler {
   }
 
   async addPoint(ctx: Context) {
-    const runId = ctx.query.id;
-    const runDto = ctx.state.validatedBody as RunRequestDto;
+    const runDto = ctx.state.validatedBody as AddPointDto;
     try {
-      if (typeof runId !== "string") {
-        throw new ValidationError("Invalid run id");
-      }
       await this.runService.addPoint(
         ctx.state.user.id,
-        runId,
+        runDto.runId,
         runDto.coordinates
       );
       JsonSuccess(ctx, 200, {}, "Point added successfully");
@@ -42,15 +38,11 @@ export class RunHandler {
   }
 
   async completeRun(ctx: Context) {
-    const runId = ctx.query.id;
-    const runDto = ctx.state.validatedBody as RunRequestDto;
+    const runDto = ctx.state.validatedBody as AddPointDto;
     try {
-      if (typeof runId !== "string") {
-        throw new ValidationError("Invalid run id");
-      }
       await this.runService.completeRun(
         ctx.state.user.id,
-        runId,
+        runDto.runId,
         runDto.coordinates
       );
       JsonSuccess(ctx, 200, {}, "Run completed");
@@ -71,13 +63,11 @@ export class RunHandler {
   }
 
   async getRun(ctx: Context) {
-    const runId = ctx.query.id;
+    const runId = ctx.params.id;
     try {
-      if (typeof runId !== "string") {
-        throw new ValidationError("Invalid run id");
-      }
+      if (!runId) throw new ValidationError("Invalid run id");
       const data = await this.runService.getRun(ctx.state.user.id, runId);
-      JsonSuccess(ctx, 201, data, "Run fetched");
+      JsonSuccess(ctx, 200, data, "Run fetched");
     } catch (error) {
       handleError(ctx, error);
     }
