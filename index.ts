@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import Koa from "koa";
 import { Configs, validateConfigs } from "./src/packages/configs";
-import { connectDB } from "./src/packages/db";
+import { connectDB } from "./src/packages/db/db";
 import bodyParser from "koa-bodyparser";
 import { authRouter, runRouter } from "./src/routes";
 

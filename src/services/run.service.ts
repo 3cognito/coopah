@@ -7,7 +7,7 @@ import {
   releaseRunner,
   rollbackTransaction,
   startTransaction,
-} from "../packages/db";
+} from "../packages/db/db";
 
 export class RunService {
   private readonly ptRepo;

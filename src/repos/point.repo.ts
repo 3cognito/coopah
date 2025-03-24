@@ -1,5 +1,5 @@
 import { QueryRunner, Repository } from "typeorm";
-import { AppDataSource } from "../packages/db";
+import { AppDataSource } from "../packages/db/db";
 import { validateEntity } from "../utils/validator";
 import { ValidationError } from "../errors";
 import { Point } from "../models/point.model";

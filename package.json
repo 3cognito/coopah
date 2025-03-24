@@ -9,6 +9,7 @@
     "koa": "^2.16.0",
     "koa-bodyparser": "^4.4.1",
     "pg": "^8.14.1",
+    "redis": "^4.7.0",
     "reflect-metadata": "^0.2.2",
     "typeorm": "^0.3.21"
   },
@@ -37,6 +38,7 @@
     "@types/koa__router": "^12.0.4",
     "@types/koa-bodyparser": "^4.3.12",
     "@types/koa-router": "^7.4.8",
+    "@types/redis": "^4.0.10",
     "nodemon": "^3.1.9",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.2"
