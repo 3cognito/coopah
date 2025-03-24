@@ -4,6 +4,7 @@ import { validationMiddleware } from "../middlewares/validation";
 import { LoginDto, RegisterDto } from "../dto/auth.dto";
 import { RunRequestDto } from "../dto/run.dto";
 import { runHandler } from "../handlers/run.handler";
+import { CheckAuthToken } from "../middlewares/auth";
 
 export const authRouter = new Router({
   prefix: "/auth",
@@ -20,6 +21,7 @@ authRouter.post("/login", validationMiddleware(LoginDto), async (ctx) => {
 export const runRouter = new Router({
   prefix: "/runs",
 });
+runRouter.use(CheckAuthToken);
 
 runRouter.post("/", validationMiddleware(RunRequestDto), async (ctx) => {
   await runHandler.create(ctx);
