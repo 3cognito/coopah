@@ -2,6 +2,12 @@ import { RunStatus } from "../models/run.model";
 import { pointRepo, PointRepo } from "../repos/point.repo";
 import { runRepo, RunRepo } from "../repos/run.repo";
 import { BadRequestError } from "../errors";
+import {
+  commitTransaction,
+  releaseRunner,
+  rollbackTransaction,
+  startTransaction,
+} from "../packages/db";
 
 export class RunService {
   private readonly ptRepo;
@@ -13,17 +19,19 @@ export class RunService {
   }
 
   async createRun(userID: string, startPoint: number[]) {
-    await this.ptRepo.queryRunner?.startTransaction();
+    const trx = await startTransaction();
     try {
       const run = await this.runRepo.createRun({ userID });
       const [latitude, longitude, altitude] = startPoint;
       this.validLatLongAlt(latitude, longitude, altitude);
       await this.ptRepo.addPoint({ latitude, longitude, altitude });
-      await this.ptRepo.queryRunner?.commitTransaction();
+      await commitTransaction(trx);
       return run;
     } catch (e) {
-      await this.ptRepo.queryRunner?.rollbackTransaction();
+      await rollbackTransaction(trx);
       throw e;
+    } finally {
+      await releaseRunner(trx);
     }
   }
 
@@ -37,7 +45,7 @@ export class RunService {
   }
 
   async completeRun(userId: string, run_id: string, finishPoint: number[]) {
-    await this.ptRepo.queryRunner?.startTransaction();
+    const trx = await startTransaction();
     try {
       const run = await this.runRepo.getUserRun(run_id, userId);
       if (!run) throw new BadRequestError("Run not found");
@@ -50,11 +58,13 @@ export class RunService {
 
       //compute stats and update
       await this.runRepo.save(run);
-      await this.ptRepo.queryRunner?.commitTransaction();
+      await commitTransaction(trx);
       return run;
     } catch (e) {
-      await this.ptRepo.queryRunner?.rollbackTransaction();
+      await rollbackTransaction(trx);
       throw e;
+    } finally {
+      releaseRunner(trx);
     }
   }
 

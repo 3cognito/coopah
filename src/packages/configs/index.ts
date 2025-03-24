@@ -36,7 +36,6 @@ export function validateConfigs() {
         );
       }
 
-      console.log(value, typeof value, key);
       if (typeof value === "number" && isNaN(+value)) {
         throw new Error(`Configuration error: ${key} is an invalid number.`);
       }

@@ -30,6 +30,6 @@ export async function CheckAuthToken(ctx: Context, next: Next): Promise<void> {
       return handleError(ctx, new UnauthorizedError("Invalid token payload"));
     }
   } catch (error) {
-    return handleError(ctx, new UnauthorizedError("Invalid token"));
+    return handleError(ctx, new UnauthorizedError("Invalid or Expired token"));
   }
 }
