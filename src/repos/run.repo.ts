@@ -32,13 +32,13 @@ export class RunRepo extends Repository<Run> {
     return await this.findOne({ where: { id } });
   }
 
-  async getUserRun(id: string, userID: string) {
-    return await this.findOne({ where: { id, userID } });
+  async getUserRun(id: string, userId: string) {
+    return await this.findOne({ where: { id, userId } });
   }
 
-  async getUserCompletedRuns(userID: string) {
+  async getUserCompletedRuns(userId: string) {
     return await this.find({
-      where: { userID, status: RunStatus.COMPLETED },
+      where: { userId, status: RunStatus.COMPLETED },
     });
   }
 }

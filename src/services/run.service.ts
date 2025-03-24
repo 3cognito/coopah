@@ -18,10 +18,10 @@ export class RunService {
     this.runRepo = runRepo;
   }
 
-  async createRun(userID: string, startPoint: number[]) {
+  async createRun(userId: string, startPoint: number[]) {
     const trx = await startTransaction();
     try {
-      const run = await this.runRepo.createRun({ userID }, trx);
+      const run = await this.runRepo.createRun({ userId }, trx);
       const [latitude, longitude, altitude] = startPoint;
       this.validLatLongAlt(latitude, longitude, altitude);
       await this.ptRepo.addPoint(

@@ -20,7 +20,7 @@ export class Run {
 
   @Column()
   @Index()
-  userID!: string;
+  userId!: string;
 
   @Column({ type: "enum", enum: RunStatus, default: RunStatus.IN_PROGRESS })
   status!: string;
