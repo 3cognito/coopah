@@ -1,3 +1,5 @@
+import { Point } from "../../models/point.model";
+import { Run } from "../../models/run.model";
 import { User } from "../../models/user.model";
 import { Configs, type IConfigs } from "../configs";
 import { DataSource } from "typeorm";
@@ -9,7 +11,7 @@ export const AppDataSource = new DataSource({
   username: Configs.DB_USER,
   password: Configs.DB_PASSWORD,
   database: Configs.DB_NAME,
-  entities: [User],
+  entities: [User, Run, Point],
   synchronize: true,
 });
 
