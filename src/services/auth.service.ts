@@ -25,7 +25,7 @@ export class AuthService {
 
   async signJwt(userID: string): Promise<string> {
     const token = jwt.sign({ id: userID }, Configs.APP_SECRET, {
-      expiresIn: Configs.JWT_EXPIRES_IN_HRS,
+      expiresIn: Configs.JWT_EXPIRES_SECONDS,
     });
     return token;
   }

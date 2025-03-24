@@ -3,7 +3,7 @@ import { authService, AuthService } from "../services/auth.service";
 import { LoginDto, RegisterDto } from "../dto/auth.dto";
 import { handleError, JsonSuccess } from "../packages/response/response";
 
-export class AuthController {
+export class AuthHandler {
   private readonly authService;
   constructor(authService: AuthService) {
     this.authService = authService;
@@ -30,4 +30,4 @@ export class AuthController {
   }
 }
 
-export const authHandler = new AuthController(authService);
+export const authHandler = new AuthHandler(authService);
