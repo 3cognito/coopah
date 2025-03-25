@@ -10,6 +10,7 @@ export interface IConfigs {
   PORT: number;
   APP_SECRET: string;
   JWT_EXPIRES_SECONDS: number;
+  REDIS_URL: string;
 }
 
 export const Configs: IConfigs = {
@@ -21,6 +22,7 @@ export const Configs: IConfigs = {
   PORT: +process.env.PORT!,
   APP_SECRET: process.env.APP_SECRET!,
   JWT_EXPIRES_SECONDS: +process.env.JWT_EXPIRES_SECONDS!,
+  REDIS_URL: process.env.REDIS_URL!,
 };
 
 export function validateConfigs() {

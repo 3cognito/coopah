@@ -1,7 +1,7 @@
 import { Point } from "../../models/point.model";
 import { Run } from "../../models/run.model";
 import { User } from "../../models/user.model";
-import { Configs, type IConfigs } from "../configs";
+import { Configs } from "../configs";
 import { DataSource, QueryRunner } from "typeorm";
 
 export const AppDataSource = new DataSource({
