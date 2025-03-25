@@ -22,12 +22,9 @@ export class RunService {
     const trx = await startTransaction();
     try {
       const run = await this.runRepo.createRun({ userId }, trx);
-      const [latitude, longitude, altitude] = startPoint;
-      this.validLatLongAlt(latitude, longitude, altitude);
-      await this.ptRepo.addPoint(
-        { latitude, longitude, altitude, run_id: run.id },
-        trx
-      );
+      const [latitude, longitude] = startPoint;
+      this.validLatLongAlt(latitude, longitude);
+      await this.ptRepo.addPoint({ latitude, longitude, run_id: run.id }, trx);
       await commitTransaction(trx);
       return run;
     } catch (e) {
@@ -41,9 +38,9 @@ export class RunService {
   async addPoint(userID: string, run_id: string, coordinates: number[]) {
     const run = await this.runRepo.getUserRun(run_id, userID);
     if (!run) throw new BadRequestError("Run not found");
-    const [latitude, longitude, altitude] = coordinates;
-    this.validLatLongAlt(latitude, longitude, altitude);
-    await this.ptRepo.addPoint({ latitude, longitude, altitude, run_id });
+    const [latitude, longitude] = coordinates;
+    this.validLatLongAlt(latitude, longitude);
+    await this.ptRepo.addPoint({ latitude, longitude, run_id });
     //process and return key run stats incase mobile is not doing so (use redis to hold active runs and associated data???)
   }
 
@@ -52,9 +49,9 @@ export class RunService {
     try {
       const run = await this.runRepo.getUserRun(run_id, userId);
       if (!run) throw new BadRequestError("Run not found");
-      const [latitude, longitude, altitude] = finishPoint;
-      this.validLatLongAlt(latitude, longitude, altitude);
-      await this.ptRepo.addPoint({ latitude, longitude, altitude, run_id });
+      const [latitude, longitude] = finishPoint;
+      this.validLatLongAlt(latitude, longitude);
+      await this.ptRepo.addPoint({ latitude, longitude, run_id });
 
       run.finishedAt = new Date();
       run.status = RunStatus.COMPLETED;
@@ -83,7 +80,7 @@ export class RunService {
     return { run, mapPoints: runPts };
   }
 
-  private validLatLongAlt(lat: number, long: number, alt: number) {
+  private validLatLongAlt(lat: number, long: number) {
     if (lat < -90 || lat > 90) {
       throw new BadRequestError("Latitude must be between -90 and 90 degrees.");
     }
@@ -91,9 +88,6 @@ export class RunService {
       throw new BadRequestError(
         "Longitude must be between -180 and 180 degrees."
       );
-    }
-    if (alt < 0) {
-      throw new BadRequestError("Altitude cannot be negative.");
     }
   }
 }

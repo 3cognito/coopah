@@ -33,13 +33,12 @@ export class Point {
   @Check(`longitude BETWEEN -180 AND 180`)
   longitude!: number;
 
-  @Column({ type: "float" })
-  @Check(`altitude >= 0`)
-  altitude!: number;
+  //consider adding altitude laterrrr!!
 
   @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   //TODO: some kind of validation to ensure newer entries cannot have older timestamps??
   //Note to self: validation does not necessarily have to be done at model level???
+  //not a priority
   timestamp!: Date;
 
   @CreateDateColumn()

@@ -3,16 +3,16 @@ import { IsArray, ArrayMaxSize, ArrayMinSize, IsUUID } from "class-validator";
 
 export class RunRequestDto {
   @IsArray()
-  @ArrayMinSize(3)
-  @ArrayMaxSize(3)
+  @ArrayMinSize(2)
+  @ArrayMaxSize(2)
   @Type(() => Number)
   coordinates!: number[]; //lat, long, alt
 }
 
 export class AddPointDto {
   @IsArray()
-  @ArrayMinSize(3)
-  @ArrayMaxSize(3)
+  @ArrayMinSize(2)
+  @ArrayMaxSize(2)
   @Type(() => Number)
   coordinates!: number[]; //lat, long, alt
 
