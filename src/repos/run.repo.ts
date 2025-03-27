@@ -24,6 +24,14 @@ export class RunRepo extends Repository<Run> {
     throw new ValidationError(errors.join(" "));
   }
 
+  async saveRun(run: Run, trx?: QueryRunner) {
+    let updatedRun: Run;
+    trx
+      ? (updatedRun = await trx.manager.save(run))
+      : (updatedRun = await this.save(run));
+    return updatedRun;
+  }
+
   async updateRun(run: PartialWithRequired<Run, "id">) {
     return await this.save(run);
   }

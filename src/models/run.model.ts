@@ -23,7 +23,7 @@ export class Run {
   userId!: string;
 
   @Column({ type: "enum", enum: RunStatus, default: RunStatus.IN_PROGRESS })
-  status!: string;
+  status!: RunStatus;
 
   @Column({ nullable: true })
   finishedAt!: Date;
@@ -34,8 +34,8 @@ export class Run {
   @Column({ default: 0 })
   timeElapsed!: number; // in seconds
 
-  @Column({ type: "float", default: 0 })
-  caloriesBurned!: number;
+  // @Column({ type: "float", default: 0 })
+  // caloriesBurned!: number;
 
   @Column({ default: 0 })
   speed!: number; //km/h
@@ -51,4 +51,8 @@ export class Run {
 
   @DeleteDateColumn()
   deletedAt!: Date;
+
+  inProgress() {
+    return this.status == RunStatus.IN_PROGRESS;
+  }
 }
