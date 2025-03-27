@@ -16,7 +16,7 @@ import { QueryRunner } from "typeorm";
 
 export type ComputablePoint = Pick<
   Point,
-  "latitude" | "longitude" | "timestamp"
+  "latitude" | "longitude" | "timestamp" | "run_id"
 >;
 
 export class RunService {
@@ -58,7 +58,7 @@ export class RunService {
   async addPoint(userID: string, run_id: string, coordinates: number[]) {
     const [latitude, longitude] = coordinates;
     this.validLatLongAlt(latitude, longitude);
-    const newPoint = this.coordinatesToPoint(coordinates);
+    const newPoint = this.coordinatesToPoint(run_id, coordinates);
     let activeRun = await this.getRunFromRedis(run_id, userID);
 
     if (!activeRun) {
@@ -81,6 +81,7 @@ export class RunService {
     }
 
     const run_stat = updateStat(activeRun, newPoint, RunStatus.IN_PROGRESS);
+
     this.addRuntoRedis(run_stat);
     await this.ptRepo.save(newPoint); //use queue???
     return run_stat;
@@ -93,7 +94,7 @@ export class RunService {
     const trx = await startTransaction();
     try {
       const existingStat = await this.getRunFromRedis(run_id, userId);
-      const newPoint = this.coordinatesToPoint(finishPoint);
+      const newPoint = this.coordinatesToPoint(run_id, finishPoint);
       const run = await this.runRepo.getUserRun(run_id, userId);
 
       if (!run) throw new NotFoundError("Run not found");
@@ -174,11 +175,12 @@ export class RunService {
     return await this.runRepo.saveRun(run, trx);
   }
 
-  private coordinatesToPoint(coordinates: number[]) {
+  private coordinatesToPoint(runId: string, coordinates: number[]) {
     const pt: ComputablePoint = {
       latitude: coordinates[0],
       longitude: coordinates[1],
       timestamp: new Date(),
+      run_id: runId,
     };
     return pt;
   }

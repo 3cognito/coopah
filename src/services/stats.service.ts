@@ -1,5 +1,4 @@
 import { RunStat } from "../dto/run.dto";
-import { Point } from "../models/point.model";
 import { Run, RunStatus } from "../models/run.model";
 import { ComputablePoint, runService } from "./run.service";
 
@@ -29,7 +28,7 @@ const haversineDistance = (
     Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) ** 2;
 
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
+  console.log(coord1, coord2);
   return R * c; // Distance in meters
 };
 
@@ -81,6 +80,7 @@ export function updateStat(
   if (run_stat.lastTimestamp > pt.timestamp.getTime()) {
     return run_stat;
   }
+  const currentCoordinates = [pt.latitude, pt.longitude];
   run_stat.totalDistance += haversineDistance(
     {
       latitude: run_stat.lastCoordinates[0],
@@ -97,6 +97,8 @@ export function updateStat(
   run_stat.speed = run_stat.totalDistance / run_stat.timeElapsed;
   run_stat.pace = run_stat.timeElapsed / run_stat.totalDistance;
   run_stat.status = status;
+  run_stat.lastCoordinates = currentCoordinates;
+
   return run_stat;
 }
 
