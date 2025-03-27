@@ -1,12 +1,9 @@
 Features of Runner's Progress Tracker API:
-
-2. Run Tracking
-   - Recording runs (distance, time, route)
-   - Automatic pace calculation
-   - Automatic calories burned estimation
    
 3. Statistics
-   - Overall summary stats (total distance, runs, duration)
-   - Weekly progress tracking
-   - Average pace metrics
-   - First/last run tracking
+   - Overall summary stats (total distance, runs, duration) - calculate stats parse by date range
+4. fix calculations
+5. allow for batch updates or websocket??
+6. tests
+7.make declaration merging work
+8. dockerise and deploy??
