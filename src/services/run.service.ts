@@ -89,6 +89,8 @@ export class RunService {
   async completeRun(userId: string, run_id: string, finishPoint: number[]) {
     const [latitude, longitude] = finishPoint;
     this.validLatLongAlt(latitude, longitude);
+
+    const trx = await startTransaction();
     try {
       const existingStat = await this.getRunFromRedis(run_id, userId);
       const newPoint = this.coordinatesToPoint(finishPoint);
@@ -97,32 +99,29 @@ export class RunService {
       if (!run) throw new NotFoundError("Run not found");
       if (!run.inProgress()) throw new BadRequestError("Run already completed");
 
-      let stat: RunStat;
-      if (existingStat) {
-        stat = updateStat(existingStat, newPoint, RunStatus.COMPLETED);
-      } else {
-        const pts = await this.ptRepo.getRunPoints(run.id);
-        stat = computeStats(run, [newPoint, ...pts], RunStatus.COMPLETED);
-      }
+      const stat = existingStat
+        ? updateStat(existingStat, newPoint, RunStatus.COMPLETED)
+        : computeStats(
+            run,
+            [newPoint, ...(await this.ptRepo.getRunPoints(run.id))],
+            RunStatus.COMPLETED
+          );
+
       stat.status = RunStatus.COMPLETED;
 
-      const trx = await startTransaction();
-      try {
-        await this.markRunCompleted(trx, run, stat);
-        await this.ptRepo.addPoint(newPoint, trx); //should I update run final status and pt in trx or send pt to queue and update run alone??????
-        await commitTransaction(trx);
-        this.redisClient.deleteObject(run.id);
-        return stat;
-      } catch (e) {
-        console.error(e);
-        rollbackTransaction(trx);
-      } finally {
-        releaseRunner(trx);
-      }
+      await this.markRunCompleted(trx, run, stat);
+      await this.ptRepo.addPoint(newPoint, trx);
+      await commitTransaction(trx);
+
+      this.redisClient.deleteObject(run.id);
+      return stat;
     } catch (e) {
+      console.error(e);
+      await rollbackTransaction(trx);
       throw e;
+    } finally {
+      await releaseRunner(trx);
     }
-    //delete redis entry or expire
   }
 
   async getUserCompletedRuns(userId: string) {
@@ -133,8 +132,21 @@ export class RunService {
     const run = await this.runRepo.getUserRun(runId, userId);
     if (!run) throw new BadRequestError("Run not found");
     const runPts = await this.ptRepo.getRunPoints(run.id);
-    //aggregate and format
-    return { run, mapPoints: runPts };
+    if (runPts.length < 2) {
+      throw new BadRequestError(
+        "This run cannot be fetched, either it is incomplete or it is invalid"
+      );
+    }
+    const [first, ...rest] = runPts;
+    //due to compute stats signature - TODO: check how to improve
+    return {
+      run: computeStats(run, [first, ...rest], run.status),
+      points: runPts.map(({ latitude, longitude, timestamp }) => ({
+        latitude,
+        longitude,
+        timestamp,
+      })),
+    };
   }
 
   private validLatLongAlt(lat: number, long: number) {
