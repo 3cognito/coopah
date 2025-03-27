@@ -26,12 +26,12 @@ export class RunHandler {
   async addPoint(ctx: Context) {
     const runDto = ctx.state.validatedBody as AddPointDto;
     try {
-      await this.runService.addPoint(
+      const data = await this.runService.addPoint(
         ctx.state.user.id,
         runDto.runId,
         runDto.coordinates
       );
-      JsonSuccess(ctx, 200, {}, "Point added successfully");
+      JsonSuccess(ctx, 200, data, "Point added successfully");
     } catch (error) {
       handleError(ctx, error);
     }
@@ -40,12 +40,12 @@ export class RunHandler {
   async completeRun(ctx: Context) {
     const runDto = ctx.state.validatedBody as AddPointDto;
     try {
-      await this.runService.completeRun(
+      const data = await this.runService.completeRun(
         ctx.state.user.id,
         runDto.runId,
         runDto.coordinates
       );
-      JsonSuccess(ctx, 200, {}, "Run completed");
+      JsonSuccess(ctx, 200, data, "Run completed");
     } catch (error) {
       handleError(ctx, error);
     }

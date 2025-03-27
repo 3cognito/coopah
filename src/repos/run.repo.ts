@@ -1,5 +1,5 @@
 import { QueryRunner, Repository } from "typeorm";
-import { AppDataSource } from "../packages/db";
+import { AppDataSource } from "../packages/db/db";
 import { validateEntity } from "../utils/validator";
 import { ValidationError } from "../errors";
 import { Run, RunStatus } from "../models/run.model";
@@ -22,6 +22,14 @@ export class RunRepo extends Repository<Run> {
       return newRun;
     }
     throw new ValidationError(errors.join(" "));
+  }
+
+  async saveRun(run: Run, trx?: QueryRunner) {
+    let updatedRun: Run;
+    trx
+      ? (updatedRun = await trx.manager.save(run))
+      : (updatedRun = await this.save(run));
+    return updatedRun;
   }
 
   async updateRun(run: PartialWithRequired<Run, "id">) {

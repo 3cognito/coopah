@@ -4,6 +4,7 @@ import { Configs, validateConfigs } from "./src/packages/configs";
 import { connectDB } from "./src/packages/db";
 import bodyParser from "koa-bodyparser";
 import { authRouter, runRouter } from "./src/routes";
+import { connectRedis } from "./src/packages/db";
 
 const app = new Koa();
 app.use(bodyParser());
@@ -20,5 +21,6 @@ app.listen(port, async () => {
 
 async function initializeAppDependencies() {
   validateConfigs();
+  await connectRedis();
   await connectDB();
 }

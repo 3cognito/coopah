@@ -1,6 +1,6 @@
 import { Repository } from "typeorm";
 import { User } from "../models/user.model";
-import { AppDataSource } from "../packages/db";
+import { AppDataSource } from "../packages/db/db";
 import { validateEntity } from "../utils/validator";
 import { ValidationError } from "../errors";
 
