@@ -1,6 +1,6 @@
 import { RunStat } from "../dto/run.dto";
 import { Run, RunStatus } from "../models/run.model";
-import { ComputablePoint, runService } from "./run.service";
+import { ComputablePoint } from "./run.service";
 
 const toRadians = (degrees: number): number => (degrees * Math.PI) / 180;
 
@@ -9,27 +9,18 @@ interface Coordinates {
   longitude: number;
 }
 
-const haversineDistance = (
-  coord1: Coordinates,
-  coord2: Coordinates
-): number => {
-  const R = 6371000; // Earth's radius in meters
-
-  const lat1 = toRadians(coord1.latitude);
-  const lon1 = toRadians(coord1.longitude);
-  const lat2 = toRadians(coord2.latitude);
-  const lon2 = toRadians(coord2.longitude);
-
-  const dLat = lat2 - lat1;
-  const dLon = lon2 - lon1;
-
+function haversineDistance(coord1: Coordinates, coord2: Coordinates): number {
+  const R = 6371; // Earth's radius in km
+  const dLat = toRadians(coord2.latitude - coord1.latitude);
+  const dLon = toRadians(coord2.longitude - coord1.longitude);
   const a =
     Math.sin(dLat / 2) ** 2 +
-    Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) ** 2;
-
+    Math.cos(toRadians(coord1.latitude)) *
+      Math.cos(toRadians(coord2.latitude)) *
+      Math.sin(dLon / 2) ** 2;
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return R * c; // Distance in meters
-};
+  return R * c; // Distance in km
+}
 
 export type NonEmptyArray<T> = [T, ...T[]];
 
