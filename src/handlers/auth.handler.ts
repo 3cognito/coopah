@@ -23,7 +23,7 @@ export class AuthHandler {
     const loginDto = ctx.state.validatedBody as LoginDto;
     try {
       const data = await this.authService.login(loginDto);
-      JsonSuccess(ctx, 201, data, "login successful");
+      JsonSuccess(ctx, 200, data, "login successful");
     } catch (error) {
       handleError(ctx, error);
     }
