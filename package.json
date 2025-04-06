@@ -18,6 +18,7 @@
   "version": "1.0.0",
   "main": "index.js",
 "scripts": {
+  "test-dev": "npm run build && start-server-and-test 'NODE_ENV=test node dist/index.js' http://localhost:7842 'jest --runInBand --watch'",
   "test": "npm run build && start-server-and-test 'NODE_ENV=test node dist/index.js' http://localhost:7842 'jest --runInBand'",
   "build": "npm run clean && tsc",
   "clean": "rm -rf dist",
