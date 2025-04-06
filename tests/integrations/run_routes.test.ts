@@ -149,15 +149,6 @@ describe("Run Endpoints", () => {
     beforeEach(async () => {
       const runResponse = await createTestRun(authToken);
       runId = runResponse.data.runId;
-
-      //   // Add at least one point to make a valid run
-      //   const pointCoordinates = [40.713, -74.0065];
-      //   await makeRequest(
-      //     "POST",
-      //     `${RUN_PATH}/point`,
-      //     { runId, coordinates: pointCoordinates },
-      //     authToken
-      //   );
     });
 
     it("should complete an existing run", async () => {
@@ -312,7 +303,7 @@ describe("Run Endpoints", () => {
       );
       const responseJson = (await response.json()) as any;
 
-      expect(response.status).toBe(400);
+      expect(response.status).toBe(404);
       expect(responseJson.message).toBe("Run not found");
     });
 
