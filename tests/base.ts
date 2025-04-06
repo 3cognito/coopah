@@ -5,3 +5,4 @@ export const HEALTH_PATH = BASE_URL;
 export const AUTH_PATHS = BASE_URL + "auth/";
 export const REGISTER_PATH = AUTH_PATHS + "register";
 export const LOGIN_PATH = AUTH_PATHS + "login";
+export const RUN_PATH = BASE_URL + "runs/";
