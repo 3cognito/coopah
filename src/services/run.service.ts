@@ -131,7 +131,7 @@ export class RunService {
 
   async getRun(userId: string, runId: string) {
     const run = await this.runRepo.getUserRun(runId, userId);
-    if (!run) throw new BadRequestError("Run not found");
+    if (!run) throw new NotFoundError("Run not found");
     const runPts = await this.ptRepo.getRunPoints(run.id);
     if (runPts.length < 2) {
       throw new BadRequestError(

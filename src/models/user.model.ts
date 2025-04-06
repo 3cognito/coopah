@@ -46,4 +46,8 @@ export class User {
   hashPassword() {
     this.password = bcrypt.hashSync(this.password, 14);
   }
+
+  isCorrectPassword(p: string) {
+    return bcrypt.compareSync(p, this.password);
+  }
 }
