@@ -22,5 +22,6 @@ export function generateUser() {
 export async function registerUser() {
   const userData = generateUser();
   const res = await makeRequest("POST", REGISTER_PATH, userData);
-  return { ok: res.ok, userData };
+  const response = (await res.json()) as any; //how do I better type this??
+  return { ok: res.ok, userData, response };
 }
