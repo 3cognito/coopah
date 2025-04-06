@@ -26,12 +26,12 @@ export async function loginUser(
 }
 
 export async function createTestRun(token: string) {
-  const coordinates = [40.7128, -74.006]; // Example coordinates (NYC)
+  const coordinates = [37.7749, -122.4194];
   const response = await makeRequest(
     "POST",
-    `${RUN_PATH}/`,
+    `${RUN_PATH}`,
     { coordinates },
     token
   );
-  return await response.json();
+  return (await response.json()) as any;
 }
