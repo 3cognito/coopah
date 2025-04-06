@@ -327,7 +327,7 @@ describe("Run Endpoints", () => {
       );
       const responseJson = (await response.json()) as any;
 
-      expect(response.status).toBe(400);
+      expect(response.status).toBe(404);
       expect(responseJson.message).toBe("Run not found");
     });
 
