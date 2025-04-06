@@ -23,6 +23,13 @@ export class UserRepo extends Repository<User> {
     return await this.findOne({ where: { email } });
   }
 
+  async findByEmailWithPassword(email: string): Promise<User | null> {
+    return await this.findOne({
+      where: { email },
+      select: ["password", "firstname", "email", "lastname", "createdAt"],
+    });
+  }
+
   async findByID(id: string): Promise<User | null> {
     return await this.findOne({ where: { id } });
   }

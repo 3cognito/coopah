@@ -1,5 +1,11 @@
 import * as dotenv from "dotenv";
-dotenv.config();
+import path from "node:path";
+
+if (process.env.NODE_ENV == "test") {
+  dotenv.config({ path: path.resolve(process.cwd(), "test.env") });
+} else {
+  dotenv.config();
+}
 
 export interface IConfigs {
   DB_HOST: string;

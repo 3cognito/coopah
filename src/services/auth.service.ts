@@ -1,5 +1,5 @@
 import { LoginDto, RegisterDto } from "../dto/auth.dto";
-import { NotFoundError } from "../errors";
+import { BadRequestError, NotFoundError } from "../errors";
 import { Configs } from "../packages/configs";
 import { userRepo, UserRepo } from "../repos/user.repo";
 import jwt from "jsonwebtoken";
@@ -17,8 +17,10 @@ export class AuthService {
   }
 
   async login(data: LoginDto) {
-    const user = await this.userRepo.findByEmail(data.email);
-    if (!user) throw new NotFoundError("Account not found");
+    const user = await this.userRepo.findByEmailWithPassword(data.email);
+    if (!user || !user.isCorrectPassword(data.password)) {
+      throw new BadRequestError("Invalid email or password");
+    }
     const token = await this.signJwt(user.id);
     return { user, token };
   }
