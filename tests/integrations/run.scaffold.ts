@@ -35,3 +35,29 @@ export async function createTestRun(token: string) {
   );
   return (await response.json()) as any;
 }
+
+export async function completeRun(
+  runId: string,
+  authToken: string,
+  finalCoords: number[]
+) {
+  await makeRequest(
+    "PUT",
+    `${RUN_PATH}`,
+    { runId, coordinates: finalCoords },
+    authToken
+  );
+}
+
+export async function addPoint(
+  runId: string,
+  authToken: string,
+  coords: number[]
+) {
+  await makeRequest(
+    "POST",
+    `${RUN_PATH}point`,
+    { runId, coordinates: coords },
+    authToken
+  );
+}
