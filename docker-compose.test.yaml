@@ -3,14 +3,18 @@ services:
     image: postgres:15
     container_name: my_postgres
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 1002
-      POSTGRES_DB: coopah_test
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "5433:5432"
+    env_file:
+      - test.env
 
   redis:
     image: redis:7
     container_name: my_redis
     ports:
       - "6379:6379"
+    env_file:
+      - test.env
