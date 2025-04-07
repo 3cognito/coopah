@@ -68,3 +68,21 @@ export class RunStat {
   @IsNumber()
   timeElapsed!: number; // seconds
 }
+
+export class RunSummary {
+  @IsUUID()
+  userId!: string;
+
+  @IsNumber()
+  speed!: number; // m/s
+
+  @IsNumber()
+  @Type(() => Number)
+  pace!: number; // seconds/m
+
+  @IsNumber()
+  totalDistance!: number; // meters
+
+  @IsNumber()
+  totalTimeSpent!: number; // seconds
+}
