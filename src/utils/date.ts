@@ -1,4 +1,4 @@
-type DateRange = {
+export type DateRange = {
   startDate: string;
   endDate: string;
 };
@@ -33,7 +33,7 @@ function parseDate(dateStr: string): Date {
   return new Date(year, month - 1, day);
 }
 
-function validateDateRange(range: DateRange): {
+export function validateDateRange(range: DateRange): {
   isValid: boolean;
   errorMessage?: string;
 } {
