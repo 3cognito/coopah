@@ -1,6 +1,6 @@
 export type DateRange = {
-  startDate: string;
-  endDate: string;
+  start_date: string;
+  end_date: string;
 };
 
 function isValidDateFormat(dateStr: string): boolean {
@@ -37,22 +37,22 @@ export function validateDateRange(range: DateRange): {
   isValid: boolean;
   errorMessage?: string;
 } {
-  if (!isValidDateFormat(range.startDate)) {
+  if (!isValidDateFormat(range.start_date)) {
     return {
       isValid: false,
       errorMessage: "Start date is not in valid dd-mm-yyyy format",
     };
   }
 
-  if (!isValidDateFormat(range.endDate)) {
+  if (!isValidDateFormat(range.end_date)) {
     return {
       isValid: false,
       errorMessage: "End date is not in valid dd-mm-yyyy format",
     };
   }
 
-  const startDate = parseDate(range.startDate);
-  const endDate = parseDate(range.endDate);
+  const startDate = parseDate(range.start_date);
+  const endDate = parseDate(range.end_date);
 
   if (endDate < startDate) {
     return {
