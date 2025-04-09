@@ -31,6 +31,10 @@ runRouter.put("/", validationMiddleware(RunRequestDto), async (ctx) => {
   await runHandler.completeRun(ctx);
 });
 
+runRouter.get("/summary", async (ctx) => {
+  await runHandler.getSummary(ctx);
+});
+
 runRouter.get("/user", async (ctx) => {
   await runHandler.getCompletedRuns(ctx);
 });

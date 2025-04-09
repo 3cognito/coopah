@@ -26,7 +26,7 @@ export class UserRepo extends Repository<User> {
   async findByEmailWithPassword(email: string): Promise<User | null> {
     return await this.findOne({
       where: { email },
-      select: ["password", "firstname", "email", "lastname", "createdAt"],
+      select: ["id", "password", "firstname", "email", "lastname", "createdAt"],
     });
   }
 
