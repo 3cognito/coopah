@@ -1,8 +1,9 @@
-import { QueryRunner, Repository } from "typeorm";
+import { Between, FindManyOptions, QueryRunner, Repository } from "typeorm";
 import { AppDataSource } from "../packages/db/db";
 import { validateEntity } from "../utils/validator";
-import { ValidationError } from "../errors";
+import { BadRequestError, ValidationError } from "../errors";
 import { Run, RunStatus } from "../models/run.model";
+import { DateRange, parseDate, validateDateRange } from "../utils/date";
 
 type PartialWithRequired<T, K extends keyof T> = Partial<T> &
   Required<Pick<T, K>>;
@@ -44,9 +45,28 @@ export class RunRepo extends Repository<Run> {
     return await this.findOne({ where: { id, userId } });
   }
 
-  async getUserCompletedRuns(userId: string) {
+  async getUserCompletedRuns(userId: string, dateRange?: DateRange) {
+    if (dateRange) {
+      const { isValid, errorMessage } = validateDateRange(dateRange);
+      if (!isValid) throw new BadRequestError(errorMessage);
+
+      const startDate = parseDate(dateRange.start_date);
+      const endDate = parseDate(dateRange.end_date);
+
+      return await this.find({
+        where: {
+          userId,
+          status: RunStatus.COMPLETED,
+          finishedAt: Between(startDate, endDate),
+        },
+      });
+    }
+
     return await this.find({
-      where: { userId, status: RunStatus.COMPLETED },
+      where: {
+        userId,
+        status: RunStatus.COMPLETED,
+      },
     });
   }
 }

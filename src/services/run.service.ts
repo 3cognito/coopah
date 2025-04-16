@@ -9,10 +9,11 @@ import {
   startTransaction,
 } from "../packages/db/db";
 import { RedisClient, redisClient } from "../packages/db";
-import { RunStat } from "../dto/run.dto";
+import { RunStat, RunSummary } from "../dto/run.dto";
 import { Point } from "../models/point.model";
 import { computeStats, updateStat, mapRunToRunStat } from "./stats.service";
 import { QueryRunner } from "typeorm";
+import { DateRange } from "../utils/date";
 
 export type ComputablePoint = Pick<
   Point,
@@ -132,7 +133,7 @@ export class RunService {
   async getRun(userId: string, runId: string) {
     const run = await this.runRepo.getUserRun(runId, userId);
     if (!run) throw new NotFoundError("Run not found");
-    const runPts = await this.ptRepo.getRunPoints(run.id);
+    const runPts = await this.ptRepo.getRunPoints(run.id); // this should be automatically done by a db join
     if (runPts.length < 2) {
       throw new BadRequestError(
         "This run cannot be fetched, either it is incomplete or it is invalid"
@@ -148,6 +149,42 @@ export class RunService {
         timestamp,
       })),
     };
+  }
+
+  async getRunSummary(userId: string, dateRange: DateRange) {
+    const runs = await this.runRepo.getUserCompletedRuns(userId, dateRange);
+    const stats = [];
+    for (const run of runs) {
+      const runPts = await this.ptRepo.getRunPoints(run.id);
+      if (runPts.length < 2) {
+        continue;
+      }
+      let [first, ...rest] = runPts;
+      stats.push(computeStats(run, [first, ...rest], run.status));
+    }
+    return this.computeSummary(stats);
+  }
+
+  private computeSummary(stats: RunStat[]) {
+    if (stats.length === 0) return null;
+    let totalDistance = 0;
+    let totalTime = 0;
+    for (const stat of stats) {
+      totalDistance += stat.totalDistance;
+      totalTime += stat.timeElapsed;
+    }
+
+    const averagePace = totalDistance > 0 ? totalTime / totalDistance : 0;
+    const averageSpeed = totalTime > 0 ? totalDistance / totalTime : 0;
+
+    const summary: RunSummary = {
+      userId: stats[0].userId,
+      totalDistance,
+      totalTimeSpent: totalTime,
+      averagePace,
+      averageSpeed,
+    };
+    return summary;
   }
 
   private validLatLongAlt(lat: number, long: number) {
