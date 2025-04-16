@@ -74,11 +74,11 @@ export class RunSummary {
   userId!: string;
 
   @IsNumber()
-  speed!: number; // m/s
+  averageSpeed!: number; // m/s
 
   @IsNumber()
   @Type(() => Number)
-  pace!: number; // seconds/m
+  averagePace!: number; // seconds/m
 
   @IsNumber()
   totalDistance!: number; // meters

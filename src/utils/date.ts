@@ -28,7 +28,7 @@ function isValidDateFormat(dateStr: string): boolean {
   return true;
 }
 
-function parseDate(dateStr: string): Date {
+export function parseDate(dateStr: string): Date {
   const [day, month, year] = dateStr.split("-").map(Number);
   return new Date(year, month - 1, day);
 }
