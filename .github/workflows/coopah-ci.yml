@@ -30,5 +30,16 @@ jobs:
           REDIS_URL=redis://localhost:6379
           EOF
 
+      - name: Start Docker services
+        run: docker compose -f docker-compose.test.yaml up -d
+
+      - name: Wait for Postgres (host)
+        run: |
+          for i in {1..10}; do
+            nc -z localhost 5433 && echo "Postgres is ready" && break
+            echo "Waiting for postgres..."
+            sleep 2
+          done
+
       - name: Run tests
         run: make run-tests
