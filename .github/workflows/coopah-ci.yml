@@ -18,16 +18,16 @@ jobs:
 
       - name: Create test config file
         run: |
-          cat > test.env << EOF
-          DB_PORT=5433
-          DB_USER=postgres
-          DB_NAME=coopah_test
-          DB_PASSWORD=1002
-          PORT=7842
-          DB_HOST=localhost
-          APP_SECRET=app_secretttttttt
-          JWT_EXPIRES_SECONDS=36000
-          REDIS_URL=redis://localhost:6379
+          cat > test.env << 'EOF'
+            DB_PORT=5433
+            DB_USER=postgres
+            DB_NAME=coopah_test
+            DB_PASSWORD=1002
+            PORT=7842
+            DB_HOST=localhost
+            APP_SECRET=app_secretttttttt
+            JWT_EXPIRES_SECONDS=36000
+            REDIS_URL=redis://localhost:6379
           EOF
 
       - name: Start Docker services
