@@ -9,7 +9,7 @@ services:
     ports:
       - "5433:5432"
     env_file:
-      - test.env
+      - .env.ci
 
   redis:
     image: redis:7
