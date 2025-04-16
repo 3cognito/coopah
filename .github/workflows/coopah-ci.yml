@@ -22,7 +22,7 @@ jobs:
           DB_PORT=5433
           DB_USER=postgres
           DB_NAME=coopah_test
-          DB_PASSWORD=pppp
+          DB_PASSWORD=1002
           PORT=7842
           DB_HOST=localhost
           APP_SECRET=app_secretttttttt
