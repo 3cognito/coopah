@@ -27,10 +27,10 @@ jobs:
 
       - name: Create test environment file
         run: |
-          echo "DB_HOST=localhost" >> .test.env
-          echo "DB_USER=test_user" >> .test.env
-          echo "DB_PASSWORD=test_password" >> .test.env
-          echo "API_KEY=test_api_key" >> .test.env
+          echo "DB_HOST=localhost" >> test.env
+          echo "DB_USER=test_user" >> test.env
+          echo "DB_PASSWORD=test_password" >> test.env
+          echo "API_KEY=test_api_key" >> test.env
 
       - name: Run tests
         run: make test
