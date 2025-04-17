@@ -4,7 +4,7 @@ import { LoginDto, RegisterDto } from "../dto/auth.dto";
 import { handleError, JsonSuccess } from "../packages/response/response";
 
 export class AuthHandler {
-  private readonly authService;
+  private readonly authService: AuthService;
   constructor(authService: AuthService) {
     this.authService = authService;
   }
