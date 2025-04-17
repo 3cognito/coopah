@@ -28,9 +28,14 @@ jobs:
       - name: Create test environment file
         run: |
           echo "DB_HOST=localhost" >> test.env
-          echo "DB_USER=test_user" >> test.env
-          echo "DB_PASSWORD=test_password" >> test.env
-          echo "API_KEY=test_api_key" >> test.env
+          echo "DB_USER=postgres" >> test.env
+          echo "DB_PORT=5433" >> test.env
+          echo "DB_NAME=testdb" >> test.env
+          echo "APP_SECRET=secret" >> test.env
+          echo "PORT=7482" >> test.env
+          echo "DB_PASSWORD=3333" >> test.env
+          echo "JWT_EXPIRES_SECONDS=368883" >> test.env
+          echo "REDIS_URL=redis://localhost:6379"
 
       - name: Run tests
         run: make test
