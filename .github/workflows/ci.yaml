@@ -35,7 +35,7 @@ jobs:
           echo "PORT=7482" >> test.env
           echo "DB_PASSWORD=3333" >> test.env
           echo "JWT_EXPIRES_SECONDS=368883" >> test.env
-          echo "REDIS_URL=redis://localhost:6379"
+          echo "REDIS_URL=redis://localhost:6379" >> test.env
 
       - name: Run tests
         run: make test
