@@ -4,9 +4,16 @@ import { RunService, runService } from "../services/run.service";
 import { AddPointDto, RunRequestDto } from "../dto/run.dto";
 import { ValidationError } from "../errors";
 import { DateRange, validateDateRange } from "../utils/date";
+import { User } from "../models/user.model";
+
+declare module "koa" {
+  interface DefaultState {
+    user: User;
+  }
+}
 
 export class RunHandler {
-  private readonly runService;
+  private readonly runService: RunService;
   constructor(runService: RunService) {
     this.runService = runService;
   }
