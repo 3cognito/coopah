@@ -27,7 +27,7 @@ jobs:
 
       - name: Create test environment file
         run: |
-          echo "DB_HOST=localhost" >> test.env
+          echo "DB_HOST=my_postgres" >> test.env
           echo "DB_USER=postgres" >> test.env
           echo "DB_PORT=5437" >> test.env
           echo "DB_NAME=testdb" >> test.env
