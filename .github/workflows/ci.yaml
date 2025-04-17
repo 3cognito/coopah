@@ -25,5 +25,12 @@ jobs:
       - name: Build
         run: npm run build --if-present
 
+      - name: Create test environment file
+        run: |
+          echo "DB_HOST=localhost" >> .test.env
+          echo "DB_USER=test_user" >> .test.env
+          echo "DB_PASSWORD=test_password" >> .test.env
+          echo "API_KEY=test_api_key" >> .test.env
+
       - name: Run tests
         run: make run-tests
