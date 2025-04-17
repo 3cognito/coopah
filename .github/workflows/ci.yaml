@@ -29,7 +29,7 @@ jobs:
         run: |
           echo "DB_HOST=localhost" >> test.env
           echo "DB_USER=postgres" >> test.env
-          echo "DB_PORT=5433" >> test.env
+          echo "DB_PORT=5432" >> test.env
           echo "DB_NAME=testdb" >> test.env
           echo "APP_SECRET=secret" >> test.env
           echo "PORT=7482" >> test.env
