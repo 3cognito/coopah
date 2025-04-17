@@ -39,4 +39,4 @@ jobs:
           echo "REDIS_URL=redis://localhost:6379" >> test.env
 
       - name: Run tests
-        run: make test
+        run: docker compose -f docker-compose.test.yaml up -d && npm run test
