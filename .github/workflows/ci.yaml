@@ -33,4 +33,4 @@ jobs:
           echo "API_KEY=test_api_key" >> .test.env
 
       - name: Run tests
-        run: make run-tests
+        run: make test
