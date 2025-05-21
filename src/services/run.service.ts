@@ -221,6 +221,13 @@ export class RunService {
     };
     return pt;
   }
+     private async addRuntoRedis(r: RunStat) {
+    try {
+      await this.redisClient.addObject(r.runId, r);
+    } catch (e) {
+      console.error(e);
+    }
+  }
 
     private async addRuntoRedis(r: RunStat) {
     try {
